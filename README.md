@@ -1,70 +1,135 @@
-# Getting Started with Create React App
+# 01 Hello React
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+In this sample we will create our first react component and connect it with the DOM via react-dom.
 
-## Available Scripts
+We will take a startup point sample _00 Boilerplate_.
 
-In the project directory, you can run:
+Summary steps:
 
-### `yarn start`
+- Install react and react-dom libraries.
+- Install react and react-dom typescript definitions.
+- Update the index.html to create a placeholder for the react components.
+- Create a simple react component.
+- Wire up this component by using react-dom.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Prerequisites
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Install [Node.js and npm](https://nodejs.org/en/) (v8.9.4 or higher) if they are not already installed on your computer.
 
-### `yarn test`
+> Verify that you are running at least node v8.x.x and npm 5.x.x by running `node -v` and `npm -v`
+> in a terminal/console window. Older versions may produce errors.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Steps to build it
 
-### `yarn build`
+- Copy the content of the `00 Boilerplate` folder to an empty folder for the sample.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Install the npm packages described in the [./package.json](./package.json) and verify that it works:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```bash
+npm install
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Install `react` and `react-dom` libraries as project dependencies.
 
-### `yarn eject`
+```bash
+npm install react react-dom --save
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Install also the typescript definitions for `react` and `react-dom`
+  but as dev dependencies.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm install @types/react @types/react-dom --save-dev
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- Update the [./src/index.html](./src/index.html) to create a placeholder for the react components.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+_[./src/index.html](./src/index.html)_
 
-## Learn More
+```diff
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  <div class="well">
+    <h1>Sample app</h1>
++   <div id="root"></div>
+  </div>
+</body>
+</html>
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Create a simple react component (let's create it within a new file called `hello.tsx` in `src`folder).
 
-### Code Splitting
+_[./src/hello.tsx](./src/hello.tsx)_
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```javascript
+import * as React from "react";
 
-### Analyzing the Bundle Size
+export const HelloComponent = () => {
+  return <h2>Hello component !</h2>;
+};
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Wire up this component by using `react-dom` under [./src/index.tsx](./src/index.tsx) (we have to rename
+  this file extension from `ts` to `tsx` and replace the content).
 
-### Making a Progressive Web App
+_[./src/index.tsx](./src/index.tsx)_
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```diff
+- document.write('Hello from index.ts!');
 
-### Advanced Configuration
++ import * as React from 'react';
++ import * as ReactDOM from 'react-dom';
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
++ import { HelloComponent } from './hello';
 
-### Deployment
++ ReactDOM.render(
++   <HelloComponent/>,
++   document.getElementById('root')
++ );
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- Delete the file _main.ts_ we are not going to need it anymore.
 
-### `yarn build` fails to minify
+- Modify the [./webpack.config.js](./webpack.config.js) file and change the entry point from `./main.ts`
+  to `./index.tsx`.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+_[./webpack.config.js](./webpack.config.js)_
+
+```diff
+...
+
+module.exports = {
+ context: path.join(basePath, 'src'),
+ resolve: {
+   extensions: ['.js', '.ts', '.tsx']
+ },
+ entry: ["@babel/polyfill", 
+-  "./main.ts"],
++  "./index.tsx"],
+  output: {
+    path: path.join(basePath, "dist"),
+    filename: "bundle.js"
+  },
+```
+
+- Execute the example:
+
+```bash
+npm start
+```
+
+# About Basefactor + Lemoncode
+
+We are an innovating team of Javascript experts, passionate about turning your ideas into robust products.
+
+[Basefactor, consultancy by Lemoncode](http://www.basefactor.com) provides consultancy and coaching services.
+
+[Lemoncode](http://lemoncode.net/services/en/#en-home) provides training services.
+
+For the LATAM/Spanish audience we are running an Online Front End Master degree, more info: http://lemoncode.net/master-frontend
